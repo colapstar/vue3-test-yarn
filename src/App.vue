@@ -1,24 +1,24 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
+import HelloUser from './components/HelloUser.vue'
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+  <div class="app">
+    <h1>🚀 Welcome to My Vue 3 App!</h1>
+    <p>This is running on the <strong>test branch</strong>.</p>
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+    <nav>
+      <RouterLink to="/">Home</RouterLink>
+      <RouterLink to="/about">About</RouterLink>
+      <RouterLink to="/test">Test Page</RouterLink>
+    </nav>
 
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
-
-  <RouterView />
+    <RouterView />
+  </div>
 </template>
+
 
 <style scoped>
 header {
