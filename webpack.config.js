@@ -49,7 +49,7 @@ export default {
     new VueLoaderPlugin(),
 
     new HtmlWebpackPlugin({
-      template: './public/index.html', // ✅ Make sure this file exists
+      template: './index.html',
     }),
 
     new ModuleFederationPlugin({
@@ -73,7 +73,7 @@ export default {
     static: {
       directory: path.join(__dirname, 'public'),
     },
-    port: 8080,
+    port: 3000,
     hot: true,
     historyApiFallback: true,
   },
