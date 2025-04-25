@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, ref } from 'vue';
+import { reactive, ref, onMounted } from 'vue';
 
 const name = 'Moran Toulisse';
 
@@ -28,6 +28,16 @@ const addTask = () => {
     newTaskName.value = '';
   }
 };
+
+onMounted(() => {
+  import('angular_remote/MyElement')
+    .then(() => {
+      console.log('Angular remote element loaded ✅');
+    })
+    .catch((err) => {
+      console.error('Failed to load Angular remote:', err);
+    });
+});
 </script>
 
 <template>
@@ -47,6 +57,8 @@ const addTask = () => {
       <input type="text" id="newTask" v-model="newTaskName" placeholder="Enter task name" />
       <button type="submit">Add</button>
     </form>
+
+    <h2>From Angular:</h2>
+    <angular-element />
   </div>
 </template>
-

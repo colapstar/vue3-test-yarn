@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "webpack serve --config webpack.config.js --open",
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint . --fix",
