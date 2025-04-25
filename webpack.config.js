@@ -1,9 +1,13 @@
 // webpack.config.js
 import path from 'path';
-import { fileURLToPath } from 'url';
+import { fileURLToPath, createRequire } from 'url';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { VueLoaderPlugin } from 'vue-loader';
 import webpack from 'webpack';
+
+const require = createRequire(import.meta.url); // ✅ Import JSON safely in ESM
+const { dependencies } = require('./package.json'); // ✅ Get dependencies
+
 const { ModuleFederationPlugin } = webpack.container;
 
 const __filename = fileURLToPath(import.meta.url);
@@ -18,6 +22,10 @@ export default {
     publicPath: 'auto',
     path: path.resolve(__dirname, 'dist'),
     clean: true,
+  },
+
+  optimization: {
+    runtimeChunk: false, // ✅ Fix shared eager module errors
   },
 
   resolve: {
@@ -49,7 +57,7 @@ export default {
     new VueLoaderPlugin(),
 
     new HtmlWebpackPlugin({
-      template: './index.html',
+      template: './index.html', // ✅ Use your custom HTML
     }),
 
     new ModuleFederationPlugin({
@@ -59,11 +67,11 @@ export default {
         angular_remote: 'angular_remote@http://localhost:4201/remoteEntry.js',
       },
       shared: {
+        ...dependencies,
         vue: {
           singleton: true,
           strictVersion: false,
-          requiredVersion: false,
-          eager: false, // ✅ This avoids eager consumption error
+          requiredVersion: dependencies.vue,
         },
       },
     }),
