@@ -1,17 +1,19 @@
-// webpack.config.js
 import path from 'path';
-import { fileURLToPath, createRequire } from 'url';
+import { fileURLToPath } from 'url';
+import fs from 'fs';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { VueLoaderPlugin } from 'vue-loader';
 import webpack from 'webpack';
 
-const require = createRequire(import.meta.url); // ✅ Import JSON safely in ESM
-const { dependencies } = require('./package.json'); // ✅ Get dependencies
-
-const { ModuleFederationPlugin } = webpack.container;
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+const packageJson = JSON.parse(
+  fs.readFileSync(path.resolve('./package.json'), 'utf-8')
+);
+const { dependencies } = packageJson;
+
+const { ModuleFederationPlugin } = webpack.container;
 
 export default {
   mode: 'development',
@@ -25,7 +27,7 @@ export default {
   },
 
   optimization: {
-    runtimeChunk: false, // ✅ Fix shared eager module errors
+    runtimeChunk: false,
   },
 
   resolve: {
@@ -37,29 +39,17 @@ export default {
 
   module: {
     rules: [
-      {
-        test: /\.vue$/,
-        use: 'vue-loader',
-      },
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: 'babel-loader',
-      },
-      {
-        test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
-      },
+      { test: /\.vue$/, use: 'vue-loader' },
+      { test: /\.js$/, exclude: /node_modules/, use: 'babel-loader' },
+      { test: /\.css$/, use: ['style-loader', 'css-loader'] },
     ],
   },
 
   plugins: [
     new VueLoaderPlugin(),
-
     new HtmlWebpackPlugin({
-      template: './index.html', // ✅ Use your custom HTML
+      template: '.public/index.html',
     }),
-
     new ModuleFederationPlugin({
       name: 'vue_host',
       filename: 'remoteEntry.js',
